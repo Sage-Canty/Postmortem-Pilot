@@ -1,4 +1,4 @@
-# autopsy
+# Autopsy
 
 Writing RCAs manually after a 2-hour incident — digging through logs, reconstructing timelines, correlating deploys — is slow, tedious, and happens when you're already exhausted. autopsy does the first draft so engineers can focus on validating and improving it instead of building it from scratch at 3am.
 
@@ -42,6 +42,22 @@ but used the wrong config key.
 3. Filters health check noise automatically
 4. Sends everything to Claude with a structured RCA prompt
 5. Outputs a markdown postmortem with timeline, root cause, deploy correlation, contributing factors, and action items
+
+## Automated trigger
+
+autopsy can run automatically when a deploy fails. Add `.github/workflows/auto-rca.yml`
+to your repo and set these secrets:
+
+| Secret | Required | Description |
+|--------|----------|-------------|
+| `ANTHROPIC_API_KEY` | Yes | Claude API key |
+| `AWS_ACCESS_KEY_ID` | Yes | AWS credentials |
+| `AWS_SECRET_ACCESS_KEY` | Yes | AWS credentials |
+| `AWS_DEFAULT_REGION` | No | Defaults to us-east-1 |
+| `LOG_GROUP` | No | CloudWatch log group to query |
+
+When any workflow fails, autopsy automatically generates an RCA and posts it
+to the GitHub Actions job summary — visible directly in the failed run.
 
 ---
 
